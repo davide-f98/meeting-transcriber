@@ -65,22 +65,4 @@ enum PickerLanguages {
         ("bg", "\u{0411}\u{044A}\u{043B}\u{0433}\u{0430}\u{0440}\u{0441}\u{043A}\u{0438}"),
         ("sr", "\u{0421}\u{0440}\u{043F}\u{0441}\u{043A}\u{0438}"),
     ]
-
-    /// Cohere Transcribe's 14 languages (`CohereAsrConfig.Language`). No auto-detect.
-    static let cohere: [(code: String, label: String)] = [
-        ("it", "Italiano"),
-        ("en", "English"),
-        ("de", "Deutsch"),
-        ("fr", "Fran\u{00E7}ais"),
-        ("es", "Espa\u{00F1}ol"),
-        ("pt", "Portugu\u{00EA}s"),
-        ("nl", "Nederlands"),
-        ("pl", "Polski"),
-        ("el", "\u{0395}\u{03BB}\u{03BB}\u{03B7}\u{03BD}\u{03B9}\u{03BA}\u{03AC}"),
-        ("ar", "\u{0627}\u{0644}\u{0639}\u{0631}\u{0628}\u{064A}\u{0629}"),
-        ("ja", "\u{65E5}\u{672C}\u{8A9E}"),
-        ("zh", "\u{4E2D}\u{6587}"),
-        ("ko", "\u{D55C}\u{AD6D}\u{C5B4}"),
-        ("vi", "Ti\u{1EBF}ng Vi\u{1EC7}t"),
-    ]
 }

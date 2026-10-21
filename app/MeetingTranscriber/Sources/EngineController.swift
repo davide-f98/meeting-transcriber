@@ -26,7 +26,6 @@ import Observation
 final class EngineController {
     let whisperKit: WhisperKitEngine
     let parakeetEngine: ParakeetEngine
-    let cohereEngine = CohereEngine()
 
     private let settings: AppSettings
 
@@ -67,9 +66,6 @@ final class EngineController {
         switch settings.transcriptionEngine {
         case .parakeet:
             parakeetEngine
-
-        case .cohere:
-            cohereEngine
 
         case .whisperKit:
             whisperKit
@@ -117,9 +113,6 @@ final class EngineController {
             if parakeetEngine.customVocabularyBookmark != nextBookmark { parakeetEngine.customVocabularyBookmark = nextBookmark }
             let nextLang = settings.parakeetLanguageOrNil
             if parakeetEngine.language != nextLang { parakeetEngine.language = nextLang }
-
-        case .cohere:
-            if cohereEngine.language != settings.cohereLanguage { cohereEngine.language = settings.cohereLanguage }
         }
     }
 
@@ -135,7 +128,6 @@ final class EngineController {
             _ = settings.customVocabularyBookmark
             _ = settings.whisperKitVocabularyPromptEnabled
             _ = settings.parakeetLanguage
-            _ = settings.cohereLanguage
         } onChange: { [weak self] in
             Task { @MainActor in
                 guard let self else { return }

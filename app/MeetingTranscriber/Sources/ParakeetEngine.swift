@@ -4,7 +4,7 @@ import os.log
 
 private let logger = Logger(subsystem: AppPaths.logSubsystem, category: "ParakeetEngine")
 
-/// Transcription engine backed by NVIDIA Parakeet TDT v3 via FluidAudio CoreML.
+/// Transcription engine backed by Parakeet Ultra (post-trained NVIDIA Parakeet TDT v3) via FluidAudio CoreML.
 ///
 /// Supports 25 European languages with ~10× faster transcription than Whisper Large v3
 /// and lower hallucination risk. Model download is ~50 MB (CoreML, same infrastructure
@@ -94,7 +94,8 @@ final class ParakeetEngine: TranscribingEngine, StreamingTranscribingEngine {
             modelState = .downloading
             downloadProgress = 0
             do {
-                let models = try await AsrModels.downloadAndLoad { [weak self] progress in
+                // Ultra: moondream's post-training of v3, same languages/API, more accurate (picked over v3 and Cohere on Italian meetings).
+                let models = try await AsrModels.downloadAndLoad(version: .ultra) { [weak self] progress in
                     Task { @MainActor in
                         self?.downloadProgress = progress.fractionCompleted
                     }

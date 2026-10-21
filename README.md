@@ -53,7 +53,7 @@ flowchart TD
     C["16 kHz Mono Convert<br/>AVAudioFile → AVAsset → ffmpeg"]
     D{"Transcription Engine<br/>CoreML / ANE"}
     D1["WhisperKit<br/>99 languages"]
-    D2["Parakeet TDT v3<br/>25 EU languages"]
+    D2["Parakeet Ultra (TDT v3)<br/>25 EU languages"]
     E["Speaker Diarization<br/>FluidAudio · dual-track + recognition"]
     F["Protocol Generation<br/>Claude CLI · OpenAI-compatible · none"]
     G["Markdown Protocol<br/>Summary · Decisions · Tasks · Transcript"]
@@ -85,7 +85,7 @@ flowchart TD
 - **Dual audio recording** — App audio ([CATapDescription](https://developer.apple.com/documentation/coreaudio/catap)) + microphone simultaneously
 - **On-device transcription** — Two engines, selectable in Settings:
   - [WhisperKit](https://github.com/argmaxinc/WhisperKit) — 99+ languages, ~1 GB model
-  - [Parakeet TDT v3](https://github.com/FluidInference/FluidAudio) (NVIDIA) — 25 EU languages, ~50 MB model, ~10× faster
+  - [Parakeet Ultra](https://huggingface.co/moondream/parakeet-ultra) (post-trained NVIDIA Parakeet TDT v3, via FluidAudio) — 25 EU languages, ~600 MB model, ~10× faster
 - **Custom vocabulary & terminology** — One shared vocabulary file boosts recognition of names/jargon on Parakeet (CTC boosting) and, optionally, on WhisperKit (experimental decoder-prompt hint); an independent, opt-in terminology-normalization pass rewrites recognized spelling variants to a canonical form after transcription, regardless of engine
 - **On-device speaker diarization** — [FluidAudio](https://github.com/FluidInference/FluidAudio) via CoreML/ANE — no HuggingFace token needed; two modes: standard (`OfflineDiarizer`) and overlap-aware (`Sortformer`)
 - **Dual-track diarization** — App and mic tracks diarized separately for clean speaker separation without echo interference

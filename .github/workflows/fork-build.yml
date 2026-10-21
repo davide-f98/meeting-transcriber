@@ -5,7 +5,7 @@ name: Fork build
 on:
   workflow_dispatch:
   push:
-    branches: [feat/cohere-transcribe-italian]
+    branches: [feat/parakeet-ultra]
 
 jobs:
   build:
@@ -15,8 +15,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Show toolchain
         run: xcodebuild -version && swift --version
-      - name: Unit tests (Cohere + settings)
-        run: cd app/MeetingTranscriber && swift test --filter 'CohereEngineTests|AppSettingsTests'
+      - name: Unit tests (Parakeet + settings)
+        run: cd app/MeetingTranscriber && swift test --filter 'ParakeetEngineTests|AppSettingsTests'
       - name: Build app (ad-hoc signed, no notarization)
         run: ./scripts/build_release.sh --no-notarize
       - uses: actions/upload-artifact@v4

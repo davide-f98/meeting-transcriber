@@ -81,12 +81,6 @@ final class AppSettingsTests: XCTestCase {
         XCTAssertEqual(settings.activeEngineLanguageOrNil, "en")
     }
 
-    func test_cohereLanguage_defaultsToItalianAndDrivesActiveEngineLanguage() {
-        XCTAssertEqual(settings.cohereLanguage, "it")
-        settings.transcriptionEngine = .cohere
-        XCTAssertEqual(settings.activeEngineLanguageOrNil, "it")
-    }
-
     // MARK: - Clamping
 
     func testPollIntervalClampedToMinimum() {
