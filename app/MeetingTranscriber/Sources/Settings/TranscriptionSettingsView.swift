@@ -6,6 +6,7 @@ struct TranscriptionSettingsView: View {
     @Bindable var settings: AppSettings
     var whisperKitEngine: WhisperKitEngine
     var parakeetEngine: ParakeetEngine
+    var cohereEngine = CohereEngine()
 
     /// Set when the user flips live captions on while a first-use Nemotron model
     /// download is pending — defers the actual enable to the consent alert.
@@ -40,6 +41,7 @@ struct TranscriptionSettingsView: View {
             enginePicker
             whisperKitPickers
             parakeetLanguagePicker
+            cohereLanguagePicker
             customVocabularyRow
             customVocabularyValidation
             whisperKitVocabularyPromptControls
@@ -83,6 +85,20 @@ struct TranscriptionSettingsView: View {
                     Text(lang.label).tag(lang.code)
                 }
             }
+        }
+    }
+
+    @ViewBuilder
+    private var cohereLanguagePicker: some View { // swiftlint:disable:this attributes
+        if settings.transcriptionEngine == .cohere {
+            Picker("Language", selection: $settings.cohereLanguage) {
+                ForEach(PickerLanguages.cohere, id: \.code) { lang in
+                    Text(lang.label).tag(lang.code)
+                }
+            }
+            Text("~2 GB model, downloaded on first use. Slower than Parakeet; most accurate on Italian.")
+                .font(.caption)
+                .foregroundStyle(.secondary)
         }
     }
 
@@ -239,6 +255,10 @@ struct TranscriptionSettingsView: View {
             "Text file with one term per line. Parakeet uses CTC rescoring for saved transcription. "
                 + "Live captions do not use CTC vocabulary rescoring."
 
+        case .cohere:
+            "Text file with one term per line. Cohere Transcribe does not use it for recognition; "
+                + "terminology normalization still applies to the transcript."
+
         case .whisperKit:
             "Text file with one term per line. Enable the experimental custom vocabulary prompt to pass a "
                 + "soft 32-token decoder hint to WhisperKit; it is not a guaranteed correction. "
@@ -304,6 +324,7 @@ struct TranscriptionSettingsView: View {
         switch settings.transcriptionEngine {
         case .parakeet: parakeetEngine
         case .whisperKit: whisperKitEngine
+        case .cohere: cohereEngine
         }
     }
 

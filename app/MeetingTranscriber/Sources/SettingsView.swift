@@ -5,6 +5,7 @@ struct SettingsView: View {
     @Bindable var settings: AppSettings
     var whisperKitEngine: WhisperKitEngine
     var parakeetEngine: ParakeetEngine
+    var cohereEngine = CohereEngine()
     var updateChecker: UpdateChecker?
 
     /// Notification visibility from `PermissionsController`, forwarded to the
@@ -71,6 +72,7 @@ struct SettingsView: View {
                 settings: settings,
                 whisperKitEngine: whisperKitEngine,
                 parakeetEngine: parakeetEngine,
+                cohereEngine: cohereEngine,
             )
 
         case .speakers:

@@ -1,0 +1,25 @@
+# Fork-only: builds an ad-hoc-signed, un-notarized DMG on a GitHub-hosted runner
+# (upstream CI uses a custom `xcode-27` runner this fork doesn't have).
+name: Fork build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/cohere-transcribe-italian]
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Show toolchain
+        run: xcodebuild -version && swift --version
+      - name: Unit tests (Cohere + settings)
+        run: cd app/MeetingTranscriber && swift test --filter 'CohereEngineTests|AppSettingsTests'
+      - name: Build app (ad-hoc signed, no notarization)
+        run: ./scripts/build_release.sh --no-notarize
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MeetingTranscriber-dmg
+          path: .build/release/*.dmg

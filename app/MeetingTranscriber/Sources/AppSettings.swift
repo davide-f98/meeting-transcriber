@@ -16,11 +16,13 @@ enum TranscriptionEngineSetting: String, CaseIterable, Codable {
     // swiftlint:disable:next raw_value_for_camel_cased_codable_enum
     case whisperKit
     case parakeet
+    case cohere
 
     var label: String {
         switch self {
         case .whisperKit: "WhisperKit (Whisper)"
         case .parakeet: "Parakeet TDT v3 (NVIDIA)"
+        case .cohere: "Cohere Transcribe (best for Italian)"
         }
     }
 
@@ -29,7 +31,7 @@ enum TranscriptionEngineSetting: String, CaseIterable, Codable {
     /// engines with stricter OS floors.
     var isAvailable: Bool {
         switch self {
-        case .whisperKit, .parakeet: true
+        case .whisperKit, .parakeet, .cohere: true
         }
     }
 
@@ -44,7 +46,7 @@ enum TranscriptionEngineSetting: String, CaseIterable, Codable {
     /// future non-streaming engine is forced to declare its support here.
     var supportsLiveTranscription: Bool {
         switch self {
-        case .whisperKit, .parakeet: true
+        case .whisperKit, .parakeet, .cohere: true
         }
     }
 }
@@ -296,6 +298,12 @@ final class AppSettings {
     /// concrete default for historical reasons (and hurt non-DE users in #256).
     var parakeetLanguage: String {
         didSet { defaults.set(parakeetLanguage, forKey: "parakeetLanguage") }
+    }
+
+    /// Cohere Transcribe language (ISO 639-1). The model has no auto-detect, so
+    /// it is always set; defaults to Italian.
+    var cohereLanguage: String {
+        didSet { defaults.set(cohereLanguage, forKey: "cohereLanguage") }
     }
 
     private(set) var customVocabularyPath: String {
@@ -605,6 +613,7 @@ final class AppSettings {
             ?? "openai_whisper-large-v3-v20240930_turbo"
         whisperLanguage = defaults.object(forKey: "whisperLanguage") as? String ?? "de"
         parakeetLanguage = defaults.object(forKey: "parakeetLanguage") as? String ?? ""
+        cohereLanguage = defaults.string(forKey: "cohereLanguage") ?? "it"
         customVocabularyPath = defaults.string(forKey: "customVocabularyPath") ?? ""
         customVocabularyBookmark = defaults.data(forKey: "customVocabularyBookmark")
         whisperKitVocabularyPromptEnabled = defaults.object(forKey: "whisperKitVocabularyPromptEnabled") as? Bool ?? false
